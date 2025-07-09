@@ -36,7 +36,9 @@ public class HomeActivity extends AppCompatActivity {
     
     private TextView welcomeText;
     private TextView userInfoText;
+    private TextView authMethodText;
     private Button refreshTokenButton;
+    private Button changeAuthMethodButton;
     private ProgressBar progressBar;
     
     @Override
@@ -56,8 +58,18 @@ public class HomeActivity extends AppCompatActivity {
         
         welcomeText = findViewById(R.id.welcome_text);
         userInfoText = findViewById(R.id.user_info_text);
+        authMethodText = findViewById(R.id.auth_method_text);
         refreshTokenButton = findViewById(R.id.refresh_token_button);
+        changeAuthMethodButton = findViewById(R.id.change_auth_method_button);
         progressBar = findViewById(R.id.progress_bar);
+        
+        // Display authentication method
+        String authMethod = getIntent().getStringExtra("authMethod");
+        if (authMethod != null && authMethod.equals("biometric")) {
+            authMethodText.setText("Authenticated with: Biometric + Okta");
+        } else {
+            authMethodText.setText("Authenticated with: Traditional Okta Login");
+        }
     }
     
     private void initOkta() {
@@ -84,6 +96,11 @@ public class HomeActivity extends AppCompatActivity {
     
     private void setupClickListeners() {
         refreshTokenButton.setOnClickListener(v -> refreshAccessToken());
+        changeAuthMethodButton.setOnClickListener(v -> {
+            // Navigate to authentication choice
+            Intent intent = new Intent(this, AuthenticationChoiceActivity.class);
+            startActivity(intent);
+        });
     }
     
     private void loadUserInfo() {
@@ -182,6 +199,7 @@ public class HomeActivity extends AppCompatActivity {
     private void showLoading(boolean show) {
         progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
         refreshTokenButton.setEnabled(!show);
+        changeAuthMethodButton.setEnabled(!show);
     }
     
     private void showError(String message) {

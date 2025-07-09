@@ -117,6 +117,7 @@ public class LoginActivity extends AppCompatActivity {
                 // Navigate to home activity
                 Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                 intent.putExtra("userInfo", result.toString());
+                intent.putExtra("authMethod", "traditional");
                 startActivity(intent);
                 finish();
             }

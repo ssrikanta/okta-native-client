@@ -1,53 +1,79 @@
-# Okta Native Client - Android Application
+# Okta Native Client - Android App with Biometric Authentication
 
-A native Android application that demonstrates secure authentication using Okta with PKCE (Proof Key for Code Exchange) flow.
+A secure Android native application that integrates with Okta using OAuth 2.0 with PKCE flow, enhanced with biometric authentication (Face ID/Fingerprint) support.
 
-## Features
+## 🔐 Authentication Methods
 
-- **Secure Authentication**: Uses Okta OIDC SDK with PKCE flow
-- **Modern UI**: Material Design components with a clean, modern interface
-- **Token Management**: Automatic token refresh functionality
-- **User Profile**: Displays authenticated user information
-- **Secure Storage**: Encrypted storage for sensitive authentication data
-- **Logout Functionality**: Complete logout with session cleanup
+The app supports two authentication methods:
 
-## Prerequisites
+### 1. Traditional Okta Authentication
+- Standard OAuth 2.0 with PKCE flow
+- Browser-based authentication
+- Secure token storage
 
-- Android Studio Arctic Fox or later
-- Android SDK API 23 or higher
-- Okta Developer Account
-- Java 8 or higher
+### 2. Biometric + Okta Authentication
+- Face ID, fingerprint, or other biometric authentication
+- Combined with Okta OAuth for enhanced security
+- Seamless user experience
 
-## Okta Setup
+## 🚀 Features
 
-1. **Create an Okta Developer Account**
-   - Go to [developer.okta.com](https://developer.okta.com)
-   - Sign up for a free developer account
+- **Dual Authentication Options**: Users can choose between traditional and biometric authentication
+- **Secure Token Management**: Encrypted token storage with refresh capabilities
+- **Modern Material Design UI**: Clean, intuitive interface with proper loading states
+- **Biometric Availability Check**: Automatic detection of device biometric capabilities
+- **Session Management**: Persistent login with secure logout
+- **Authentication Method Switching**: Users can change their preferred authentication method
 
-2. **Create a New Application**
-   - Navigate to Applications → Create App Integration
-   - Choose "OIDC - OpenID Connect"
-   - Select "Native Application"
-   - Configure the following settings:
-     - **App integration name**: Okta Native Client
-     - **Grant type**: Authorization Code with PKCE
-     - **Sign-in redirect URIs**: `com.oktapreview.dev-12345678:/callback`
-     - **Sign-out redirect URIs**: `com.oktapreview.dev-12345678:/logout`
+## 📱 App Flow
 
-3. **Note Your Configuration**
-   - **Client ID**: Found in the application settings
-   - **Okta Domain**: Your Okta domain (e.g., `dev-12345678.okta.com`)
-   - **Discovery URI**: `https://your-domain.okta.com/oauth2/default/.well-known/openid_configuration`
+1. **Main Activity**: Checks authentication status and preferences
+2. **Authentication Choice**: User selects preferred authentication method
+3. **Authentication Process**: 
+   - Traditional: Direct Okta OAuth flow
+   - Biometric: Biometric verification → Okta OAuth flow
+4. **Home Activity**: Displays user information and provides app actions
 
-## Project Setup
+## 🔧 Technical Implementation
 
-1. **Clone the Repository**
-   ```bash
-   git clone <repository-url>
-   cd okta-native-client
-   ```
+### Dependencies
+```gradle
+// Okta OIDC Android SDK
+implementation 'com.okta.android:oidc-androidx:1.3.1'
 
-2. **Configure Okta Settings**
+// Biometric authentication
+implementation 'androidx.biometric:biometric:1.1.0'
+
+// Material Design
+implementation 'com.google.android.material:material:1.11.0'
+```
+
+### Key Components
+
+#### Activities
+- `MainActivity.java` - Entry point and routing logic
+- `AuthenticationChoiceActivity.java` - Authentication method selection
+- `LoginActivity.java` - Traditional Okta authentication
+- `BiometricAuthActivity.java` - Biometric + Okta authentication
+- `HomeActivity.java` - User dashboard with session management
+
+#### Security Features
+- **PKCE Implementation**: Enhanced OAuth security for mobile apps
+- **Biometric Authentication**: Uses Android BiometricPrompt API
+- **Secure Storage**: Encrypted SharedPreferences for sensitive data
+- **Session Validation**: Token refresh and expiration handling
+
+### Biometric Authentication Flow
+
+1. **Availability Check**: Verify device biometric capabilities
+2. **First-Time Setup**: 
+   - Biometric authentication
+   - Okta OAuth flow
+   - Save preferences
+3. **Subsequent Logins**:
+   - Biometric authentication
+   - Check existing Okta session
+   - Refresh tokens if needed
    - Open `app/src/main/res/raw/okta_oidc_config.json`
    - Update the following values:
      ```json
