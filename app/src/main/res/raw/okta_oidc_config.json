@@ -1,0 +1,12 @@
+{
+  "client_id": "YOUR_CLIENT_ID_HERE",
+  "redirect_uri": "com.oktapreview.dev-12345678:/callback",
+  "end_session_redirect_uri": "com.oktapreview.dev-12345678:/logout",
+  "scopes": [
+    "openid",
+    "profile",
+    "email",
+    "offline_access"
+  ],
+  "discovery_uri": "https://dev-12345678.okta.com/oauth2/default/.well-known/openid_configuration"
+}
